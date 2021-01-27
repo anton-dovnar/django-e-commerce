@@ -1,7 +1,7 @@
 from django.test import SimpleTestCase, tag
 from django.urls import resolve, reverse
 
-from shop.views import ProductListView, ProductDetailView
+from shop.views import ProductDetailView, ProductListView
 
 
 @tag('shop-urls')
