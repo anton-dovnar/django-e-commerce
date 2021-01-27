@@ -27,4 +27,5 @@ class ProductListView(ListView):
 
 
 class ProductDetailView(DetailView):
-    pass
+    model = Product
+    query_pk_and_slug = True
