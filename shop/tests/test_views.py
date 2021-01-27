@@ -22,3 +22,11 @@ class ViewsTest(SetUpMixin, TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
+
+    def test_product_detail_get(self):
+        response = self.client.get(reverse(
+            'shop:product-detail',
+            args=[self.product.pk, self.product.slug])
+        )
+
+        self.assertEqual(response.status_code, 200)
