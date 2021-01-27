@@ -1,5 +1,5 @@
 from django.test import SimpleTestCase, tag
-from django.urls import reverse, resolve
+from django.urls import resolve, reverse
 
 from shop.views import ProductListView
 
