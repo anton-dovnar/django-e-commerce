@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Internal
     'layout.apps.LayoutConfig',
+    'shop.apps.ShopConfig',
 ]
 
 MIDDLEWARE = [
