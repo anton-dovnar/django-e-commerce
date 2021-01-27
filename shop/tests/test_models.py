@@ -28,5 +28,5 @@ class ModelsTest(TestCase):
         self.assertIsInstance(product, Product)
         self.assertIsInstance(product.category, Category)
         self.assertEqual(product.category.name, category.name)
-        self.assertEqual(product.slug, slugify(product.product.name))
+        self.assertEqual(product.slug, slugify(product.name))
         self.assertEqual(product.__str__(), product.name)
