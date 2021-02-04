@@ -44,6 +44,7 @@ class Product(models.Model):
 class Photo(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/%Y/%m/%d')
+    url = models.CharField(max_length=255)
 
     class Meta:
         verbose_name = 'Photo'
