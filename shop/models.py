@@ -1,9 +1,10 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, db_index=True)
+    name = models.CharField(max_length=100, db_index=True, unique=True)
     slug = models.SlugField(max_length=200, db_index=True, allow_unicode=True, unique=True)
 
     class Meta:
@@ -16,6 +17,9 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('shop:product-list-by-category', args=[self.slug])
 
 
 class Product(models.Model):
@@ -32,6 +36,7 @@ class Product(models.Model):
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
         index_together = (('id', 'slug'),)
+        unique_together = ['category', 'name']
 
     def __str__(self):
         return self.name
@@ -40,10 +45,13 @@ class Product(models.Model):
         self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('shop:product-detail', args=[self.id, self.slug])
+
 
 class Photo(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='products/%Y/%m/%d')
+    image = models.ImageField()
     url = models.CharField(max_length=255)
 
     class Meta:
