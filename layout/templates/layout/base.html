@@ -15,6 +15,7 @@
 
         <!-- vendor css -->
         <link rel="stylesheet" href="{% static 'layout/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'layout/css/ui-components.css' %}">
 
         <!-- Specific CSS goes HERE -->
         {% block stylesheets %}{% endblock stylesheets %}
@@ -34,7 +35,11 @@
 
         {% include 'includes/navigation.html' %}
 
-        {% block content %}{% endblock content %}
+        <div class="pcoded-main-container">
+            <div class="pcoded-content">
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
 
         {% include 'includes/scripts.html' %}
 

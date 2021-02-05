@@ -1,13 +1,13 @@
 import json
-from pathlib import PurePath
 from io import BytesIO
+from pathlib import PurePath
 
-from django.core.management.base import BaseCommand
-from django.conf import settings
-from PIL import Image
 import requests
+from django.conf import settings
+from django.core.management.base import BaseCommand
+from PIL import Image
 
-from shop.models import Category, Product, Photo, Size
+from shop.models import Category, Photo, Product, Size
 
 
 class Command(BaseCommand):
@@ -38,10 +38,14 @@ class Command(BaseCommand):
                 if created:
                     category.save()
 
-                product, created = Product.objects.get_or_create(
-                    category=category, name=item['name'][0],
-                    price=float(item['price'][0][1:]), description=item['description'][0],
-                )
+                try:
+                    product = Product.objects.get(category=category, name=item['name'][0])
+                except Product.DoesNotExist:
+                    product = Product(category=category, name=item['name'][0])
+
+                product.price = float(item['price'][0][1:])
+                product.description = item['description'][0]
+                product.save()
 
                 photo, created = Photo.objects.get_or_create(
                     product=product, url=item['photo'][1])

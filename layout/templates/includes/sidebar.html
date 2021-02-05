@@ -3,6 +3,22 @@
     <div class="navbar-wrapper  ">
         <div class="navbar-content scroll-div ">
 
+            <ul class="nav pcoded-inner-navbar ">
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="#!" class="nav-link "><span class="pcoded-micon"><i
+                                class="feather icon-box"></i></span><span class="pcoded-mtext">Products</span></a>
+                    <ul class="pcoded-submenu">
+                        <li {% if not category %}class="selected" {% endif %}>
+                            <a href="{% url "shop:product-list" %}">All</a>
+                        </li>
+                        {% for c in categories %}
+                        <li {% if category.slug == c.slug %}class="selected" {% endif %}>
+                            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
 
         </div>
     </div>
