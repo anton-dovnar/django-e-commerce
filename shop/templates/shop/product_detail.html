@@ -1,0 +1,41 @@
+{% extends 'layout/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div id="main" class="product-detail my-5">
+    <div class="row flex-wrap col-lg-10 mx-auto">
+        <div class="photos col-lg-7 col-sm-12 text-center mb-5">
+            {% with  product.images.all.last.image as image %}
+            <img src="{% if image %}{{ image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="100%">
+            {% endwith %}
+        </div>
+
+        <div class="options col-lg-5 col-sm-12">
+            <div class="product-order">
+                <span>{{ product.category }}</span>
+                <h2 class="font-weight-normal">{{ product.name }}</h2>
+                <h4 class="font-weight-normal">${{ product.price }}</h4>
+
+
+                <h4 class="my-4 font-weight-normal">Available sizes:</h4>
+                {% for size in product.sizes.all %}
+                <div class="card col-6">
+                    <div class="card-body">
+                        <h5 class="font-weight-normal text-center">{{ size.size }}</h5>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <input class="my-3 btn btn-outline-success" type="submit" value="Add to cart">
+            </div>
+
+            <div class="my-3">
+                <p style="word-spacing:5px;">{{ product.description }}</p>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
