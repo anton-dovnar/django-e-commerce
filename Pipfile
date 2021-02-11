@@ -8,6 +8,7 @@ django = "*"
 environs = "*"
 pillow = "*"
 scrapy = "*"
+django-crispy-forms = "*"
 
 [dev-packages]
 django-extensions = "*"

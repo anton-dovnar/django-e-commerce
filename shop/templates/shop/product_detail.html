@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 
-{% load static %}
+{% load static crispy_forms_field %}
 
 {% block content %}
 <div id="main" class="product-detail my-5">
@@ -17,7 +17,6 @@
                 <h2 class="font-weight-normal">{{ product.name }}</h2>
                 <h4 class="font-weight-normal">${{ product.price }}</h4>
 
-
                 <h4 class="my-4 font-weight-normal">Available sizes:</h4>
                 {% for size in product.sizes.all %}
                 <div class="card col-6">
@@ -27,7 +26,16 @@
                 </div>
                 {% endfor %}
 
-                <input class="my-3 btn btn-outline-success" type="submit" value="Add to cart">
+                <form action="{% url 'cart:cart-add' product.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="form-group mb-2 d-none">
+                            {% crispy_field cart_product_form.quantity %}
+                            {{ cart_product_form.override }}
+                        </div>
+                        <input class="btn btn-outline-success mb-3" type="submit" value="Add to cart">
+                    </div>
+                </form>
             </div>
 
             <div class="my-3">
