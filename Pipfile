@@ -9,6 +9,7 @@ environs = "*"
 pillow = "*"
 scrapy = "*"
 django-crispy-forms = "*"
+weasyprint = "*"
 
 [dev-packages]
 django-extensions = "*"
