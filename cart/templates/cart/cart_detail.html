@@ -22,10 +22,10 @@
         {% for item in cart %}
         {% with product=item.product %}
         <tr>
-            <td class="col-md-2">
+            <td>
                 <a href="{{ product.get_absolute_url }}">
                     {% with  product.images.all.last.image as image %}
-                    <img src="{% if image %}{{ image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="100%">
+                    <img src="{% if image %}{{ image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="300px">
                     {% endwith %}
                 </a>
             </td>
@@ -58,5 +58,6 @@
 
 <p class="text-right">
     <a href="{% url 'shop:product-list' %}" class="my-3 btn btn-outline-primary">Continue shopping</a>
+    <a href="{% url 'order:order-create' %}" class="my-3 btn btn-outline-success">Checkout Order</a>
 </p>
 {% endblock %}
