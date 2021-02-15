@@ -2,8 +2,8 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from coupon.models import Coupon
 from coupon.forms import CouponApplyForm
+from coupon.models import Coupon
 
 
 @require_POST
