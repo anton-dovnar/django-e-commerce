@@ -128,3 +128,17 @@ MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
 CART_SESSION_ID = 'cart'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# Braintree settings
+BRAINTREE_MERCHANT_ID = env.str('BRAINTREE_MERCHANT_ID')
+BRAINTREE_PUBLIC_KEY = env.str('BRAINTREE_PUBLIC_KEY')
+BRAINTREE_PRIVATE_KEY = env.str('BRAINTREE_PRIVATE_KEY')
+
+import braintree
+
+BRAINTREE_CONF = braintree.Configuration(
+    braintree.Environment.Sandbox,
+    BRAINTREE_MERCHANT_ID,
+    BRAINTREE_PUBLIC_KEY,
+    BRAINTREE_PRIVATE_KEY
+)

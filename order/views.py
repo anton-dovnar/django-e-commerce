@@ -16,7 +16,7 @@ from order.models import Order
 class OrderFormView(FormView):
     form_class = OrderForm
     template_name = 'order/order_create.html'
-    success_url = reverse_lazy('shop:product-list')
+    success_url = reverse_lazy('payment:process')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

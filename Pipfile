@@ -10,6 +10,7 @@ pillow = "*"
 scrapy = "*"
 django-crispy-forms = "*"
 weasyprint = "*"
+braintree = "*"
 
 [dev-packages]
 django-extensions = "*"

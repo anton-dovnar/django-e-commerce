@@ -1,3 +1,56 @@
-from django.shortcuts import render
+import braintree
+from django.conf import settings
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import TemplateView
+from django.views.generic.detail import SingleObjectMixin
 
-# Create your views here.
+from order.models import Order
+
+gateway = braintree.BraintreeGateway(settings.BRAINTREE_CONF)
+
+
+class ProcessView(SingleObjectMixin, TemplateView):
+    model = Order
+    template_name = 'payment/process.html'
+
+    def get_object(self):
+        order_id = self.request.session.get('order_id')
+        return get_object_or_404(self.model, id=order_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['client_token'] = gateway.client_token.generate()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        order = self.get_object()
+        total_cost = order.get_total_cost()
+        nonce = self.request.POST.get('payment_method_nonce', None)
+        result = gateway.transaction.sale({
+            'amount': f'{total_cost:.2f}',
+            'payment_method_nonce': nonce,
+            'options': {
+                'submit_for_settlement': True
+            }
+        })
+
+        if result.is_success:
+            del self.request.session['order_id']
+            order.paid = True
+            order.braintree_id = result.transaction.id
+            order.save()
+            return redirect('payment:done')
+
+        return redirect('payment:canceled')
+
+
+class DoneTemplateView(TemplateView):
+    template_name = 'payment/done.html'
+
+
+class CanceledTemplateView(TemplateView):
+    template_name = 'payment/canceled.html'
