@@ -1,5 +1,6 @@
 import braintree
 from django.conf import settings
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 from django.views.generic.detail import SingleObjectMixin
@@ -39,7 +40,6 @@ class ProcessView(SingleObjectMixin, TemplateView):
         })
 
         if result.is_success:
-            del self.request.session['order_id']
             order.paid = True
             order.braintree_id = result.transaction.id
             order.save()
@@ -48,9 +48,21 @@ class ProcessView(SingleObjectMixin, TemplateView):
         return redirect('payment:canceled')
 
 
-class DoneTemplateView(TemplateView):
+class ProcessMixin:
+
+    def get(self, request, *args, **kwargs):
+        order_id = request.session.get('order_id', None)
+
+        if order_id:
+            del request.session['order_id']
+            return super().get(request, *args, **kwargs)
+
+        raise Http404('Page does not exist')
+
+
+class DoneTemplateView(ProcessMixin, TemplateView):
     template_name = 'payment/done.html'
 
 
-class CanceledTemplateView(TemplateView):
+class CanceledTemplateView(ProcessMixin, TemplateView):
     template_name = 'payment/canceled.html'

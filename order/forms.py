@@ -18,6 +18,10 @@ class OrderForm(forms.ModelForm):
         instance = super().save(commit=False)
         cart = Cart(self.request)
 
+        if cart.coupon:
+            instance.coupon = cart.coupon
+            instance.discount = cart.coupon.discount
+
         if commit:
             instance.save()
 
