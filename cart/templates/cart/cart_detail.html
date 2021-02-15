@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 
-{% load static crispy_forms_field %}
+{% load static crispy_forms_field crispy_forms_tags %}
 
 {% block title %} Your shopping cart {% endblock %}
 
@@ -53,8 +53,38 @@
         </tr>
         {% endwith %}
         {% endfor %}
+
+        {% if cart.coupon %}
+        <tr class="subtotal">
+          <td>Subtotal</td>
+          <td colspan="4"></td>
+          <td class="num">${{ cart.get_total_price|floatformat:2 }}</td>
+        </tr>
+        <tr>
+          {% with code=cart.coupon.code discount=cart.coupon.discount %}
+            <td>"{{ code }}" coupon ({{ discount }}% off)</td>
+          {% endwith %}
+          <td colspan="4"></td>
+          <td class="num neg">
+            - ${{ cart.get_discount|floatformat:2 }}
+          </td>
+        </tr>
+      {% endif %}
+      <tr class="total">
+        <td class="font-weight-bold">Total</td>
+        <td colspan="4"></td>
+        <td class="num font-weight-bold">
+          ${{ cart.get_total_price_after_discount|floatformat:2 }}
+        </td>
+      </tr>
     </tbody>
 </table>
+
+<form class="my-4" action="{% url 'coupon:apply' %}" method="post">
+    {% csrf_token %}
+    {{ coupon_form|crispy }}
+    <input class="btn btn-outline-success" type="submit" value="Apply">
+</form>
 
 <p class="text-right">
     <a href="{% url 'shop:product-list' %}" class="my-3 btn btn-outline-primary">Continue shopping</a>
