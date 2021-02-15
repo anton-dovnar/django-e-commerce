@@ -11,7 +11,6 @@ class ProductListView(ListView):
 
     def get_queryset(self):
         category = None
-        categories = Category.objects.all()
         category_slug = self.kwargs.get('category_slug', None)
         products = self.model.objects.filter(available=True)
 
@@ -21,7 +20,6 @@ class ProductListView(ListView):
 
         self.extra_context = {
             'category': category,
-            'categories': categories,
         }
 
         return products

@@ -25,7 +25,7 @@
                     </a>
                     <ul class="pcoded-submenu">
                         <li {% if not category %}class="selected" {% endif %}>
-                            <a href="{% url "shop:product-list" %}">All</a>
+                            <a href="{% url 'shop:product-list' %}">All</a>
                         </li>
                         {% for c in categories %}
                         <li {% if category.slug == c.slug %}class="selected" {% endif %}>
