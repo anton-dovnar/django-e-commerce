@@ -1,8 +1,6 @@
 import weasyprint
 from django.conf import settings
-from django.contrib.admin.views.decorators import (
-    staff_member_required,
-)
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string

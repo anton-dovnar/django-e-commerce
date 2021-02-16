@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from .models import Category, Photo, Product, Size
+from shop.models import Category, Photo, Product, Size
 
 
 @admin.register(Category)

@@ -8,7 +8,7 @@
     <div id="product-list" class="row justify-content-center flex-wrap">
         {% for product in product_list %}
         <div class="text-center m-2">
-            {% with  product.images.all.last.image as image %}
+            {% with  product.images.all.last.image_mobile as image %}
             <a href="{{ product.get_absolute_url }}">
                 <img src="{% if image %}{{ image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="300">
             </a>
