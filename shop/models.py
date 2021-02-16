@@ -8,12 +8,10 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
 from PIL import Image
 
 
-def upload_to(instance, filename):
+def upload_to(instance, filename, img):
     suffix = PurePath(filename).suffix
     file_path = settings.BASE_DIR.joinpath('media', f'{instance.product.category.name}')
     file_path.mkdir(parents=True, exist_ok=True)
@@ -71,10 +69,8 @@ class Product(models.Model):
 class Photo(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to=upload_to, null=True, blank=True)
-    image_tablet = ImageSpecField(
-        source='image', processors=[ResizeToFill(768, 960)], format='WEBP')
-    image_mobile = ImageSpecField(
-        source='image', processors=[ResizeToFill(540, 675)], format='WEBP')
+    image_tablet = models.ImageField(upload_to=upload_to, null=True, blank=True)
+    image_mobile = models.ImageField(upload_to=upload_to, null=True, blank=True)
     url = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
@@ -90,25 +86,28 @@ class Photo(models.Model):
             raise ValidationError('Image and Url cannot be both null.')
 
     def save(self, *args, **kwargs):
+        """
+        Downloading image from url.
+        """
+
         if self.url and not self.image:
-            file_path = settings.BASE_DIR.joinpath('media', f'{self.product.category.name}')
-            file_path.mkdir(parents=True, exist_ok=True)
-            file_name = PurePath(f'{self.product.name}').with_suffix('.webp')
+            category_name = self.product.category.name
+            category_path = settings.BASE_DIR.joinpath('media', f'{category_name}')
+            category_path.mkdir(parents=True, exist_ok=True)
+            stem = PurePath(f'{self.product.name}')
 
             response = requests.get(self.url)
             if response.status_code == 200:
                 with Image.open(BytesIO(response.content)) as img:
                     img.convert('RGB')
-                    img.save(file_path.joinpath(file_name).as_posix())
+                    img.save(category_path.joinpath(f'{stem}.webp').as_posix())
 
-            self.image = PurePath(f'{self.product.category.name}').joinpath(file_name).as_posix()
+                self.image = PurePath(f'{category_name}').joinpath(f'{stem}.webp').as_posix()
 
         return super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        from django.core.files.storage import (
-            default_storage,
-        )
+        from django.core.files.storage import default_storage
 
         if self.image:
             with contextlib.suppress(FileNotFoundError):
