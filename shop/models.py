@@ -1,6 +1,25 @@
+import contextlib
+from io import BytesIO
+from pathlib import PurePath
+
+import requests
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
+from PIL import Image
+
+
+def upload_to(instance, filename):
+    suffix = PurePath(filename).suffix
+    file_path = settings.BASE_DIR.joinpath('media', f'{instance.product.category.name}')
+    file_path.mkdir(parents=True, exist_ok=True)
+    file_name = PurePath(f'{instance.product.name}').with_suffix(suffix)
+
+    return PurePath(f'{instance.product.category.name}').joinpath(file_name).as_posix()
 
 
 class Category(models.Model):
@@ -51,8 +70,12 @@ class Product(models.Model):
 
 class Photo(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField()
-    url = models.CharField(max_length=255)
+    image = models.ImageField(upload_to=upload_to, null=True, blank=True)
+    image_tablet = ImageSpecField(
+        source='image', processors=[ResizeToFill(768, 960)], format='WEBP')
+    image_mobile = ImageSpecField(
+        source='image', processors=[ResizeToFill(540, 675)], format='WEBP')
+    url = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Photo'
@@ -60,6 +83,40 @@ class Photo(models.Model):
 
     def __str__(self):
         return f'{self.product.name} - {self.image}'
+
+    def clean(self):
+        super().clean()
+        if self.image is None and self.url is None:
+            raise ValidationError('Image and Url cannot be both null.')
+
+    def save(self, *args, **kwargs):
+        if self.url and not self.image:
+            file_path = settings.BASE_DIR.joinpath('media', f'{self.product.category.name}')
+            file_path.mkdir(parents=True, exist_ok=True)
+            file_name = PurePath(f'{self.product.name}').with_suffix('.webp')
+
+            response = requests.get(self.url)
+            if response.status_code == 200:
+                with Image.open(BytesIO(response.content)) as img:
+                    img.convert('RGB')
+                    img.save(file_path.joinpath(file_name).as_posix())
+
+            self.image = PurePath(f'{self.product.category.name}').joinpath(file_name).as_posix()
+
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        from django.core.files.storage import (
+            default_storage,
+        )
+
+        if self.image:
+            with contextlib.suppress(FileNotFoundError):
+                default_storage.delete(self.image_tablet.path)
+                default_storage.delete(self.image_mobile.path)
+                default_storage.delete(self.image.path)
+
+        return super().delete(*args, **kwargs)
 
 
 class Size(models.Model):
