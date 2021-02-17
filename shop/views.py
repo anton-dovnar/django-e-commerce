@@ -1,8 +1,9 @@
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
+from django.shortcuts import get_object_or_404
 
 from cart.forms import CartAddProductForm
-from shop.models import Product
+from shop.models import Product, Category
 
 
 class ProductListView(ListView):
@@ -14,7 +15,8 @@ class ProductListView(ListView):
         products = self.model.objects.list()
 
         if category_slug:
-            products = products.filter(category__slug__exact=category_slug)
+            category = get_object_or_404(Category, slug=category_slug)
+            products = products.filter(category=category)
 
         self.extra_context = {
             'category': category,
