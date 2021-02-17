@@ -1,9 +1,9 @@
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from django.shortcuts import get_object_or_404
 
 from cart.forms import CartAddProductForm
-from shop.models import Product, Category
+from shop.models import Category, Product
 
 
 class ProductListView(ListView):
