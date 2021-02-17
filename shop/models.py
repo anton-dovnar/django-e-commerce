@@ -10,6 +10,8 @@ from django.urls import reverse
 from django.utils.text import slugify
 from PIL import Image
 
+from shop.managers import ProductManager
+
 
 def upload_to(instance, filename, img):
     suffix = PurePath(filename).suffix
@@ -48,6 +50,8 @@ class Product(models.Model):
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    objects = ProductManager()
 
     class Meta:
         verbose_name = 'Product'
