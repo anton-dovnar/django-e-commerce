@@ -2,26 +2,19 @@
 
 {% load static %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'shop/css/product.css' %}">
+{% endblock stylesheets %}
+
 {% block content %}
 <div id="main" class="product-list">
     <h1 class="font-weight-normal text-center">{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
     <div id="product-list" class="row justify-content-center flex-wrap">
-        {% for product in product_list %}
-        <div class="text-center m-2">
-            {% with  product.first_photo as first_photo %}
-            <a href="{{ product.get_absolute_url }}">
-                <picture>
-                    <source media="(max-width: 576px)" srcset="{% if first_photo %}{{ first_photo.0.image_mobile.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}">
-                    <source media="(max-width: 1200px)" srcset="{% if first_photo %}{{ first_photo.0.image_tablet.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}">
-                    <img src="{% if first_photo %}{{ first_photo.0.image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="300">
-                </picture>
-            </a>
-            {% endwith %}
-            <p>{{ product.name }}<br>
-            ${{ product.price }}
-            </p>
-        </div>
-        {% endfor %}
+        {% include 'shop/product_list_ajax.html' %}
     </div>
 </div>
 {% endblock content %}
+
+{% block javascripts %}
+<script src="{% static 'shop/js/pagination.js' %}" charset="utf-8"></script>
+{% endblock javascripts %}
