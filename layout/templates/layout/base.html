@@ -13,9 +13,25 @@
         <meta name="description" content="" />
         <meta name="keywords" content="">
 
-        <!-- vendor css -->
-        <link rel="stylesheet" href="{% static 'layout/css/style.css' %}">
-        <link rel="stylesheet" href="{% static 'layout/css/ui-components.css' %}">
+        <!-- Font -->
+        <link rel="preload" href="{% static 'layout/fonts/poppins/pxiByp8kv8JHgFVrLEj6Z1xlFQ.woff2' %}" as="font" type="font/woff2" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/poppins/pxiEyp8kv8JHgFVrJJfecg.woff2' %}" as="font" type="font/woff2" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/poppins/pxiEyp8kv8JHgFVrJJnecmNE.woff2' %}" as="font" type="font/woff2" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/poppins/pxiByp8kv8JHgFVrLEj6Z11lFc-K.woff2' %}" as="font" type="font/woff2" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/poppins/pxiByp8kv8JHgFVrLGT9Z1JlFc-K.woff2' %}" as="font" type="font/woff2" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/poppins/pxiByp8kv8JHgFVrLEj6Z1JlFc-K.woff2' %}" as="font" type="font/woff2" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/poppins/pxiByp8kv8JHgFVrLGT9Z11lFc-K.woff2' %}" as="font" type="font/woff2" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/poppins/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2' %}" as="font" type="font/woff2" crossorigin="anonymous">
+
+        <!-- Icons -->
+        <link rel="preload" href="{% static 'layout/fonts/feather.eot' %}" as="font" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/feather.ttf' %}" as="font" type="font/ttf" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/feather.woff' %}" as="font" type="font/woff" crossorigin="anonymous">
+        <link rel="preload" href="{% static 'layout/fonts/feather.svg' %}" as="image" type="image/svg+xml" crossorigin="anonymous">
+
+        <!-- <link rel="preload" href="{% static 'layout/css/plugins/animate.min.css' %}" as="style"> -->
+        <link rel="stylesheet" href="{% static 'layout/css/base.css' %}">
+        <!-- <link rel="stylesheet" href="{% static 'layout/css/style.css' %}"> -->
 
         <!-- Specific CSS goes HERE -->
         {% block stylesheets %}{% endblock stylesheets %}

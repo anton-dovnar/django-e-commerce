@@ -1,0 +1,245 @@
+@import 'reset', 'font'
+
+.ps
+    overflow: hidden !important
+    overflow-anchor: none
+    -ms-overflow-style: none
+    touch-action: auto
+    -ms-touch-action: auto
+
+.nav
+    position: relative
+    display: -webkit-box
+    display: flex
+    flex-wrap: wrap
+    padding-left: 0
+    margin-bottom: 0
+    list-style: none
+    z-index: 1
+
+.ps__rail-x
+    position: absolute
+    display: none
+    opacity: 0
+    height: 15px
+    bottom: 0px
+    transition: background-color .2s linear, opacity .2s linear
+    -webkit-transition: background-color .2s linear, opacity .2s linear
+
+.ps__thumb-x
+    position: absolute
+    height: 6px
+    bottom: 2px
+    border-radius: 6px
+    background-color: #aaa
+    transition: background-color .2s linear, height .2s ease-in-out
+    -webkit-transition: background-color .2s linear, height .2s ease-in-out
+
+.ps__rail-y
+    position: absolute
+    display: none
+    width: 15px
+    right: 0
+    opacity: 0
+    transition: background-color .2s linear, opacity .2s linear
+    -webkit-transition: background-color .2s linear, opacity .2s linear
+    z-index: 5
+
+.ps__thumb-y
+    position: absolute
+    width: 6px
+    right: 2px
+    border-radius: 6px
+    transition: background-color .2s linear, width .2s ease-in-out
+    -webkit-transition: background-color .2s linear, width .2s ease-in-out
+    background: #9ea9d4
+
+.pcoded-navbar .pcoded-inner-navbar li .pcoded-submenu > li.active > a:before, .pcoded-navbar .pcoded-inner-navbar li .pcoded-submenu > li:focus > a:before, .pcoded-navbar .pcoded-inner-navbar li .pcoded-submenu > li:hover > a:before
+    background: #e5efff
+
+.pcoded-navbar.menu-light .pcoded-inner-navbar li.pcoded-hasmenu .pcoded-submenu li.active > a:before, .pcoded-navbar.menu-light .pcoded-inner-navbar li.pcoded-hasmenu .pcoded-submenu li.pcoded-trigger > a:before, .pcoded-navbar.menu-light .pcoded-inner-navbar li.pcoded-hasmenu .pcoded-submenu li:hover > a:before
+    background: #4099ff
+
+.pcoded-navbar.menu-light .pcoded-inner-navbar li.active > a, .pcoded-navbar.menu-light .pcoded-inner-navbar li.pcoded-trigger > a, .pcoded-navbar.menu-light .pcoded-inner-navbar li:hover > a
+    color: #666
+
+.pcoded-navbar
+    width: 235px
+    background: #3b4650
+    box-shadow: 2px 0 2.94px 0.06px rgba(4, 26, 55, 0.16)
+    -webkit-transition: all 0.05s ease-in-out
+    transition: all 0.05s ease-in-out
+    margin-top: 56px
+    z-index: 1028
+
+    a
+        color: #b9c7d4
+
+    ul
+        padding-left: 0
+        list-style: none
+        margin-bottom: 0
+
+    &.menupos-fixed
+        position: fixed
+        height: 100vh
+        min-height: 100vh
+
+        .scroll-div
+            &.navbar-content
+                height: calc(100% - 56px)
+                min-height: calc(100% - 56px)
+
+    &.menu-light
+        color: #666
+        background-color: #fff
+
+        a
+            color: #666
+
+        .pcoded-submenu
+            background: #fff
+
+    .navbar-content, .navbar-wrapper
+        width: 100%
+        height: 100%
+
+    .navbar-content
+        position: relative
+
+    .pcoded-inner-navbar
+        -webkit-box-orient: vertical
+        -webkit-box-direction: normal
+        flex-direction: column
+
+        > li
+            &.active > a, &.pcoded-trigger > a
+                background: rgba(202, 202, 202, 0.3)
+
+                &:before
+                    background-color: #4099ff
+
+        li
+            position: relative
+
+            &.active > a, &.pcoded-trigger > a
+                font-weight: 600
+
+            &:focus > a, &:hover > a, &.active > a
+                color: #e5efff
+
+            > a
+                position: relative
+                display: block
+                text-align: left
+                padding: 7px 20px
+                margin: 5px 0 0
+                border-radius: 2px
+
+                &:before
+                    content: ""
+                    position: absolute
+                    left: 0
+                    top: 0
+                    width: 4px
+                    height: 100%
+                    background: transparent
+
+                > .pcoded-micon
+                      font-size: 16px
+                      padding: 0
+                      margin-right: 5px
+                      border-radius: 4px
+                      width: 30px
+                      display: -webkit-inline-box
+                      display: inline-flex
+                      -webkit-box-align: center
+                      align-items: center
+                      height: 30px
+                      text-align: center
+                      -webkit-box-pack: center
+                      justify-content: center
+
+                > .pcoded-micon + .pcoded-mtext
+                    position: relative
+                    top: 0
+
+            &.pcoded-hasmenu
+                &.pcoded-trigger
+                    &.active
+                        > a
+                            position: relative
+
+                        > .pcoded-submenu
+                            display: block
+
+                    > a:after
+                        -webkit-transform: rotate(90deg)
+                        transform: rotate(90deg)
+
+                > a:after
+                    position: absolute
+                    top: 13px
+                    right: 20px
+                    content: "\e844"
+                    font-family: 'feather'
+                    font-size: 13px
+                    border: none
+                    -webkit-transition: 0.15s ease-in-out
+                    transition: 0.15s ease-in-out
+
+                .pcoded-submenu
+                    position: relative
+                    display: none
+
+                    a:after
+                        top: 7px
+
+                    li + li > a
+                        border-top-color: #ededed
+
+                    li
+                        position: relative
+
+                        > a
+                            display: block
+                            text-align: left
+                            padding: 10px 7px 10px 60px
+                            margin: 0
+
+                            &:before
+                                content: ""
+                                border-radius: 50%
+                                position: absolute
+                                top: 18px
+                                left: 44px
+                                width: 6px
+                                height: 6px
+
+                        &:after
+                            position: absolute
+                            content: ""
+                            top: 20px
+                            left: 26px
+                            width: 20px
+                            height: 1px
+                            background: rgba(185, 199, 212, 0.5)
+
+                    &:after
+                        position: absolute
+                        content: ""
+                        top: 0
+                        left: 25px
+                        width: 1px
+                        height: calc(100% - 36px)
+                        background: rgba(185, 199, 212, 0.5)
+
+    .pcoded-submenu
+        background: #3b4650
+        padding: 15px 0
+
+.pcoded-navbar .pcoded-inner-navbar li
+    ul
+        padding-left: 0
+        list-style: none
+        margin-bottom: 0
