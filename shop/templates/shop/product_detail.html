@@ -2,26 +2,36 @@
 
 {% load static crispy_forms_field %}
 
+{% block title %} {{ product.category }} - {{ product.name }} {% endblock title %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'shop/css/product.css' %}">
+{% endblock stylesheets %}
+
 {% block content %}
-<div id="main" class="product-detail my-5">
-    <div class="row flex-wrap col-lg-10 mx-auto">
-        <div class="photos col-lg-7 col-sm-12 text-center mb-5">
-            {% with  product.images.all.last.image as image %}
-            <img src="{% if image %}{{ image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="100%">
+<div id="main" class="my-5">
+    <div id="product-detail" class="d-flex flex-wrap justify-content-center">
+        <div class="photos col-lg-5 text-center mb-5">
+            {% with  product.images.all.last as images %}
+            <picture>
+                <source media="(max-width: 576px)" srcset="{% if images %}{{ images.image_mobile.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}">
+                <source media="(max-width: 1200px)" srcset="{% if images %}{{ images.image_tablet.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}">
+                <img src="{% if images %}{{ images.image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="300" height="375">
+            </picture>
             {% endwith %}
         </div>
 
-        <div class="options col-lg-5 col-sm-12">
+        <div class="options col-lg-7">
             <div class="product-order">
                 <span>{{ product.category }}</span>
                 <h2 class="font-weight-normal">{{ product.name }}</h2>
-                <h4 class="font-weight-normal">${{ product.price }}</h4>
+                <h4 class="font-weight-normal text-danger">${{ product.price }}</h4>
 
                 <h4 class="my-4 font-weight-normal">Available sizes:</h4>
                 {% for size in product.sizes.all %}
-                <div class="card col-6">
+                <div class="card">
                     <div class="card-body">
-                        <h5 class="font-weight-normal text-center">{{ size.size }}</h5>
+                        <h5 class="font-weight-normal text-center text-info">{{ size.size }}</h5>
                     </div>
                 </div>
                 {% endfor %}
@@ -33,7 +43,7 @@
                             {% crispy_field cart_product_form.quantity %}
                             {{ cart_product_form.override }}
                         </div>
-                        <input class="btn btn-outline-success mb-3" type="submit" value="Add to cart">
+                        <input class="btn btn-outline-success" type="submit" value="Add to cart">
                     </div>
                 </form>
             </div>

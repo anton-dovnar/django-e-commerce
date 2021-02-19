@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% block title %} Shoe Shop - {% if category %}{{ category.name }}{% else %}Products{% endif %} {% endblock title %}
+
 {% block stylesheets %}
 <link rel="stylesheet" href="{% static 'shop/css/product.css' %}">
 {% endblock stylesheets %}
@@ -9,7 +11,7 @@
 {% block content %}
 <div id="main" class="product-list">
     <h1 class="font-weight-normal text-center">{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
-    <div id="product-list" class="row justify-content-center flex-wrap">
+    <div id="product-list" class="d-flex justify-content-center flex-wrap">
         {% include 'shop/product_list_ajax.html' %}
     </div>
 </div>

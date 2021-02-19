@@ -1,13 +1,13 @@
 {% load static %}
 
 {% for product in object_list %}
-    <div class="text-center m-2">
+    <div class="text-center">
         {% with  product.first_photo as first_photo %}
         <a href="{{ product.get_absolute_url }}">
             <picture>
                 <source media="(max-width: 576px)" srcset="{% if first_photo %}{{ first_photo.0.image_mobile.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}">
                 <source media="(max-width: 1200px)" srcset="{% if first_photo %}{{ first_photo.0.image_tablet.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}">
-                <img src="{% if first_photo %}{{ first_photo.0.image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="300">
+                <img src="{% if first_photo %}{{ first_photo.0.image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="300" height="375">
             </picture>
         </a>
         {% endwith %}
