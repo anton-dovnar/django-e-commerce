@@ -1,4 +1,4 @@
-@import 'reset', 'font'
+@import 'reset', 'font', 'buttons'
 
 .ps
     overflow: hidden !important
@@ -6,6 +6,9 @@
     -ms-overflow-style: none
     touch-action: auto
     -ms-touch-action: auto
+
+.font-weight-normal
+    font-weight: normal
 
 .nav
     position: relative
@@ -63,6 +66,12 @@
 .pcoded-navbar.menu-light .pcoded-inner-navbar li.active > a, .pcoded-navbar.menu-light .pcoded-inner-navbar li.pcoded-trigger > a, .pcoded-navbar.menu-light .pcoded-inner-navbar li:hover > a
     color: #666
 
+.pcoded-header[class*="header-"] .mobile-menu:hover span
+    background-color: #fff
+
+.pcoded-header[class*="header-"] .mobile-menu:hover span:after, .pcoded-header[class*="header-"] .mobile-menu:hover span:before
+    background-color: #fff
+
 .pcoded-navbar
     width: 235px
     background: #3b4650
@@ -71,6 +80,60 @@
     transition: all 0.05s ease-in-out
     margin-top: 56px
     z-index: 1028
+
+    &.navbar-collapsed
+        width: 70px
+        height: 100%
+        -webkit-transition: all 0.15s ease-in-out
+        transition: all 0.15s ease-in-out
+
+        &:hover
+            width: 235px !important
+
+            .pcoded-inner-navbar
+                > li > a > .pcoded-mtext
+                    -webkit-transform: rotateY(0deg)
+                    transform: rotateY(0deg)
+                    opacity: 1
+
+                > li.pcoded-trigger .pcoded-submenu li a
+                    color: inherit
+
+        .pcoded-inner-navbar
+            > li > a > .pcoded-micon + .pcoded-mtext
+                position: absolute
+                top: 11px
+
+            > li > a > .pcoded-mtext
+                -webkit-transform: rotateY(-90deg)
+                transform: rotateY(-90deg)
+                -webkit-transform-origin: 0 0
+                transform-origin: 0 0
+                opacity: 0
+                -webkit-transition: all 0.15s ease-in-out
+                transition: all 0.15s ease-in-out
+
+            > li.pcoded-hasmenu > a:after
+                right: 12px
+
+            > li.pcoded-trigger .pcoded-submenu li a
+                color: transparent
+                white-space: nowrap
+
+            > li.pcoded-trigger .pcoded-submenu li + li a
+                border-top: none
+
+            > li.pcoded-hasmenu .pcoded-submenu
+                display: none
+
+            .navbar-content.ps
+                overflow: visible
+
+            > li > a
+                padding: 7px 20px
+
+        ~ .pcoded-main-container
+            margin-left: 70px
 
     a
         color: #b9c7d4
@@ -238,8 +301,569 @@
         background: #3b4650
         padding: 15px 0
 
+
+
 .pcoded-navbar .pcoded-inner-navbar li
     ul
         padding-left: 0
         list-style: none
         margin-bottom: 0
+
+.navbar
+    position: relative
+    display: -webkit-box
+    display: flex
+    flex-wrap: wrap
+    -webkit-box-align: center
+    align-items: center
+    -webkit-box-pack: justify
+    justify-content: space-between
+    padding: 0.5rem 1rem
+
+.pcoded-header
+    z-index: 1029
+    position: relative
+    display: -webkit-box
+    display: flex
+    min-height: 56px
+    padding: 0
+    top: 0
+    background: #fff
+    color: rgba(59, 70, 80, 0.8)
+    width: 100%
+    -webkit-transition: all 0.15s ease-in-out
+    transition: all 0.15s ease-in-out
+    box-shadow: 0 0 11px rgb(0 0 0 / 13%)
+
+    &.header-blue
+        background: -webkit-gradient(linear, left top, right top, from(#4099ff), to(#73b4ff))
+        background: linear-gradient(to right, #4099ff, #73b4ff)
+        color: rgba(255, 255, 255, 0.8)
+
+    &.headerpos-fixed
+        position: fixed
+        top: 0
+
+    .m-header
+        width: 235px
+        position: relative
+        height: 56px
+        display: -webkit-inline-box
+        display: inline-flex
+        -webkit-box-align: center
+        align-items: center
+        padding: 0 25px
+
+
+    .input-group .input-group-text, a, dropdown-toggle
+        color: rgba(59, 70, 80, 0.8)
+
+    &.header-blue
+        .input-group .input-group-text, a, dropdown-toggle
+            color: #fff
+
+            &:hover
+                color: #666
+
+    .navbar-nav
+        padding-left: 0
+        list-style: none
+        margin-bottom: 0
+        display: inline-block
+
+        > li
+            line-height: 56px
+            display: inline-block
+            padding: 0 12px
+
+            &:first-child, &:last-child
+                padding-left: 25px
+
+            .dropdown-toggle > i, > a > i
+                font-size: 16px
+
+
+
+.pcoded-header:before, .pcoded-main-container:before
+    content: ""
+    -webkit-transition: all 0.15s ease-in-out
+    transition: all 0.15s ease-in-out
+
+.mob-toggler, .mobile-menu
+    display: -webkit-box
+    display: flex
+    -webkit-box-align: center
+    align-items: center
+    -webkit-box-pack: center
+    justify-content: center
+    width: 37px
+    height: 56px
+    position: absolute
+    right: 0
+    top: 0
+    padding: 0 10px
+
+    &:hover span:after, &:hover span:before
+        background-color: #3b4650
+        width: 100%
+
+    span
+        position: relative
+        display: block
+        width: 100%
+        height: 2px
+        background-color: rgba(59, 70, 80, 0.8)
+        -webkit-transition: 0.15s cubic-bezier(0.97, 0.75, 0.61, 1.84)
+        transition: 0.15s cubic-bezier(0.97, 0.75, 0.61, 1.84)
+        -webkit-backface-visibility: hidden
+        backface-visibility: hidden
+        border-radius: 2px
+
+        &:before, &:after
+            content: ""
+            position: absolute
+            left: 0
+            height: 2px
+            background-color: rgba(59, 70, 80, 0.8)
+            -webkit-transition: 0.15s cubic-bezier(0.97, 0.75, 0.61, 1.84)
+            transition: 0.15s cubic-bezier(0.97, 0.75, 0.61, 1.84)
+            -webkit-backface-visibility: hidden
+            backface-visibility: hidden
+            border-radius: 2px
+
+        &:before
+            top: -6px
+            width: 40%
+
+        &:after
+            top: 6px
+            width: 70%
+
+.pcoded-header[class*="header-"] .mobile-menu span
+    background-color: rgba(255, 255, 255, 0.8)
+
+.pcoded-header[class*="header-"] .mobile-menu span:after, .pcoded-header[class*="header-"] .mobile-menu span:before
+    background-color: rgba(255, 255, 255, 0.8)
+
+.b-brand
+    display: -webkit-box
+    display: flex
+    -webkit-box-align: center
+    align-items: center
+
+.mob-toggler
+    right: 5px
+    display: none
+
+.navbar-collapse
+    flex-basis: 100%
+    -webkit-box-flex: 1
+    flex-grow: 1
+    -webkit-box-align: center
+    align-items: center
+
+.collapse:not(.show)
+    display: none
+
+.navbar-nav
+    display: -webkit-box
+    display: flex
+    -webkit-box-orient: vertical
+    -webkit-box-direction: normal
+    flex-direction: column
+    padding-left: 0
+    margin-bottom: 0
+    list-style: none
+
+/* Pre-loader css start */
+.loader-bg
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 3px
+    z-index: 1035
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2)
+
+    .loader-track
+        position: relative
+        height: 3px
+        display: block
+        width: 100%
+        overflow: hidden
+
+        .loader-fill
+            &:before, &:after
+                content: ''
+                background: #fff
+                position: absolute
+                top: 0
+                left: 0
+                bottom: 0
+                will-change: left, right
+
+            &:before
+                -webkit-animation: mbar 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite
+                animation: mbar 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite
+
+            &:after
+                -webkit-animation: m_s 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite
+                animation: m_s 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite
+                -webkit-animation-delay: 1.15s
+                animation-delay: 1.15s
+
+/* Pre-loader css end */
+.pcoded-header.headerpos-fixed ~ .pcoded-main-container
+    padding-top: 56px
+
+.pcoded-main-container
+    position: relative
+    margin: 0 auto
+    padding-top: 0
+    display: block
+    clear: both
+    float: unset
+    right: 0
+    top: 0
+    margin-left: 235px
+    min-height: 100vh
+    -webkit-transition: all 0.15s ease-in-out
+    transition: all 0.15s ease-in-out
+
+.pcoded-content
+    position: relative
+    display: block
+    padding: 25px
+
+
+@-webkit-keyframes mbar
+    0%
+        left: -35%
+        right: 100%
+
+
+    60%
+        left: 100%
+        right: -90%
+
+
+    100%
+        left: 100%
+        right: -35%
+
+
+
+@keyframes mbar
+    0%
+        left: -35%
+        right: 100%
+
+
+    60%
+        left: 100%
+        right: -90%
+
+
+    100%
+        left: 100%
+        right: -35%
+
+
+
+@-webkit-keyframes m_s
+    0%
+        left: -200%
+        right: 100%
+
+
+    60%
+        left: 107%
+        right: -8%
+
+
+    100%
+        left: 107%
+        right: -8%
+
+
+
+@keyframes m_s
+    0%
+        left: -200%
+        right: 100%
+
+
+    60%
+        left: 107%
+        right: -8%
+
+
+    100%
+        left: 107%
+        right: -8%
+
+/* Pre-loader css end */
+
+@media (min-width: 992px)
+    .navbar-expand-lg
+        -webkit-box-orient: horizontal
+        -webkit-box-direction: normal
+        flex-flow: row nowrap
+        -webkit-box-pack: start
+        justify-content: flex-start
+
+@media (min-width: 992px)
+    .navbar-expand-lg .navbar-nav
+        -webkit-box-orient: horizontal
+        -webkit-box-direction: normal
+        flex-direction: row
+
+@media (min-width: 992px)
+    .navbar-expand-lg .navbar-collapse
+        display: -webkit-box !important
+        display: flex !important
+        flex-basis: auto
+
+@media only screen and (max-width: 991px)
+    .pcoded-header.headerpos-fixed ~ .pcoded-main-container
+        padding-top: 56px
+
+/* main content end*/
+/* ==========================    Rsponsive Menu  start   ====================== */
+@media only screen and (max-width: 991px)
+    .pcoded-header .input-group-text,
+  .pcoded-header a,
+  .pcoded-header dropdown-toggle
+        color: #3b4650
+
+
+    .pcoded-header .input-group-text:hover,
+    .pcoded-header a:hover,
+    .pcoded-header dropdown-toggle:hover
+        color: #4099ff
+
+
+    .pcoded-header #mobile-header
+        display: none
+        right: 20px
+
+
+    .pcoded-header > .collapse:not(.show),
+  .pcoded-header .container > .collapse:not(.show)
+        background: #fff
+        box-shadow: 0 0 3px 0 rgba(54, 80, 138, 0.34)
+        position: relative
+
+
+    .pcoded-header > .collapse:not(.show) .mob-toggler:after,
+    .pcoded-header .container > .collapse:not(.show) .mob-toggler:after
+        content: "\e89a"
+        font-family: "feather"
+        font-size: 20px
+        color: #3b4650
+        position: absolute
+        right: 10px
+        top: 0
+        width: 40px
+        height: 56px
+        display: -webkit-box
+        display: flex
+        -webkit-box-align: center
+        align-items: center
+        -webkit-box-pack: center
+        justify-content: center
+
+
+    .pcoded-header > .collapse:not(.show) .mr-auto,
+    .pcoded-header .container > .collapse:not(.show) .mr-auto
+        height: 56px
+        display: -webkit-box
+        display: flex
+        -webkit-box-pack: center
+        justify-content: center
+
+
+    .pcoded-header > .collapse:not(.show) .ml-auto,
+    .pcoded-header .container > .collapse:not(.show) .ml-auto
+        margin-left: auto
+        margin-right: 0 !important
+
+
+    .pcoded-header .dropdown-menu,
+  .pcoded-header .dropdown-menu a,
+  .pcoded-header .search-close .input-group-text
+        color: #3b4650
+
+
+    .pcoded-header .m-header
+        display: -webkit-box
+        display: flex
+        -webkit-box-pack: center
+        justify-content: center
+        -webkit-box-align: center
+        align-items: center
+        width: 100%
+        height: 56px
+
+
+    .pcoded-header .m-header .mobile-menu
+        right: auto
+        left: 10px
+
+
+    .pcoded-header .m-header .mob-toggler
+        display: -webkit-box
+        display: flex
+
+
+    .pcoded-header .full-screen
+        display: none
+
+
+    .pcoded-header .navbar-nav > li:last-child
+        padding-right: 20px
+
+
+    .pcoded-navbar
+        margin-left: -235px
+        position: absolute
+        height: 100%
+        box-shadow: none
+
+
+    .pcoded-navbar .scroll-div.navbar-content
+        height: 100%
+
+
+    .pcoded-navbar ~ .pcoded-header,
+    .pcoded-navbar ~ .pcoded-main-container
+        margin-left: 0
+
+
+    .pcoded-navbar ~ .pcoded-header
+        width: 100%
+
+
+    .pcoded-navbar .navbar-brand
+        display: none
+
+
+    .pcoded-navbar.mob-open
+        margin-left: 0
+
+
+    .pcoded-navbar.mob-open .pcoded-main-container ~ .pcoded-header,
+      .pcoded-navbar.mob-open ~ .pcoded-main-container
+        margin-left: 0
+
+
+    .pcoded-main-container
+        padding-top: 0
+
+
+
+@media only screen and (max-width: 575px)
+    .pcoded-header .main-search.open .input-group .search-close
+        display: none
+
+
+    .pcoded-header .navbar-nav > li
+        padding: 0 8px
+
+
+    .pcoded-header .navbar-nav.ml-auto > li:first-child
+        padding-left: 0
+
+
+    .pcoded-header .navbar-nav > li:last-child
+        padding-right: 15px
+
+
+    .pcoded-header .navbar-nav.mr-auto li.nav-item:not(.dropdown)
+        display: block
+        padding-right: 0
+
+
+    .pcoded-header .navbar-nav.mr-auto li.nav-item:not(.dropdown) .search-close
+        display: none
+
+
+    .pcoded-header .dropdown.show
+        position: static
+
+
+    .pcoded-header .dropdown.show a:after
+        display: none
+
+
+    .pcoded-header .dropdown.show:before
+        display: none
+
+
+    .pcoded-header .dropdown .notification
+        width: 100%
+
+
+    .pcoded-header .dropdown .dropdown-menu
+        width: 95%
+        margin-left: auto
+        margin-right: auto
+        left: 0
+        right: 0
+
+
+    .header-chat.open,
+  .header-user-list.open
+        width: 280px
+
+
+    .pcoded-content
+        padding: 25px 15px
+
+
+    .card
+        margin-bottom: 15px
+
+
+
+@media only screen and (max-width: 1200px) and (min-width: 768px)
+    .pcoded-navbar .header-logo
+        -webkit-transition: none
+        transition: none
+
+
+    .pcoded-navbar.navbar-collapsed
+        -webkit-transition: none
+        transition: none
+
+
+    .pcoded-navbar.navbar-collapsed .header-logo img
+        -webkit-transition: none
+        transition: none
+
+
+    .pcoded-navbar.navbar-collapsed .pcoded-menu-caption > label
+        -webkit-transition: none
+        transition: none
+
+
+    .pcoded-navbar.navbar-collapsed .pcoded-inner-navbar > li > a > .pcoded-mtext
+        -webkit-transition: none
+        transition: none
+
+
+    .pcoded-navbar.navbar-collapsed .pcoded-inner-navbar > li.pcoded-hasmenu > a:after
+        -webkit-transition: none
+        transition: none
+        -webkit-transition-delay: 0
+        transition-delay: 0
+
+
+    .pcoded-navbar.navbar-collapsed .pcoded-badge
+        -webkit-transition: none
+        transition: none
+
+
+    .pcoded-navbar.navbar-collapsed:hover .pcoded-badge
+        -webkit-transition-delay: 0
+        transition-delay: 0
