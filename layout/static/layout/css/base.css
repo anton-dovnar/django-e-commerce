@@ -139,14 +139,6 @@ ol, ul, dl {
   content: "";
 }
 
-.icon-maximize:before {
-  content: "";
-}
-
-.icon-minimize:before {
-  content: "";
-}
-
 .ps {
   overflow: hidden !important;
   overflow-anchor: none;
