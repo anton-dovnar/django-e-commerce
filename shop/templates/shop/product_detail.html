@@ -5,7 +5,7 @@
 {% block title %} {{ product.category }} - {{ product.name }} {% endblock title %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{% static 'shop/css/product.css' %}">
+<link rel="stylesheet" href="{% static 'shop/css/product.min.css' %}">
 {% endblock stylesheets %}
 
 {% block content %}
@@ -16,7 +16,7 @@
             <picture>
                 <source media="(max-width: 576px)" srcset="{% if images %}{{ images.image_mobile.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}">
                 <source media="(max-width: 1200px)" srcset="{% if images %}{{ images.image_tablet.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}">
-                <img src="{% if images %}{{ images.image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="300" height="375">
+                <img src="{% if images %}{{ images.image.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="300" height="375" alt="{{ product.name }}">
             </picture>
             {% endwith %}
         </div>
