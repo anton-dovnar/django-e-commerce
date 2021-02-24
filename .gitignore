@@ -59,3 +59,4 @@ pyrightconfig.json
 .flake8*
 .coverage*
 .isort.cfg
+.env*
