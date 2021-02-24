@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  web:
+    build:
+      context: .
+    tty: true
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      DJANGO_SETTINGS_MODULE: "${DJANGO_SETTINGS_MODULE}"
+      DJANGO_SECRET_KEY: "${SECRET_KEY}"
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/webstore
+    restart: always
