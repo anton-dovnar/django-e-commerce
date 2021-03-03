@@ -46,9 +46,15 @@
                                     <input class="btn btn-outline-success mx-1 mb-3" type="submit" value="Update">
                                 </div>
                             </form>
+
+                            <form action="{% url 'cart:cart-remove' product.id %}" method="post">
+                                {% csrf_token %}
+                                <input class="btn btn-outline-primary mx-1 mb-3" type="submit" value="Remove">
+                            </form>
                         </td>
                         <td class="num">${{ item.price }}</td>
                         <td class="num">${{ item.total_price }}</td>
+
                     </tr>
 
                 </tbody>
