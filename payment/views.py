@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.views.generic.detail import SingleObjectMixin
 
 from order.models import Order
+from payment.tasks import payment_completed
 
 gateway = braintree.BraintreeGateway(settings.BRAINTREE_CONF)
 
@@ -43,6 +44,7 @@ class ProcessView(SingleObjectMixin, TemplateView):
             order.paid = True
             order.braintree_id = result.transaction.id
             order.save()
+            payment_completed.apply_async([order.pk])
             return redirect('payment:done')
 
         return redirect('payment:canceled')
