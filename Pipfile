@@ -11,6 +11,8 @@ scrapy = "*"
 django-crispy-forms = "*"
 weasyprint = "*"
 braintree = "*"
+celery = "*"
+psycopg2 = "*"
 
 [dev-packages]
 django-extensions = "*"

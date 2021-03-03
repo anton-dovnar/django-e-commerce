@@ -1,16 +1,49 @@
 version: '3.3'
 
 services:
-  web:
-    build:
-      context: .
-    tty: true
-    command: python manage.py runserver 0.0.0.0:8000
-    environment:
-      DJANGO_SETTINGS_MODULE: "${DJANGO_SETTINGS_MODULE}"
-      DJANGO_SECRET_KEY: "${SECRET_KEY}"
-    ports:
-      - 8000:8000
-    volumes:
-      - ./:/webstore
-    restart: always
+    postgres:
+        image: postgres:latest
+        environment:
+            POSTGRES_DB: "${DATABASE_NAME}"
+            POSTGRES_USER: "${DATABASE_USER}"
+            POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
+            PGDATA: "/var/lib/postgresql/data"
+        ports:
+            - 5432:5432
+        volumes:
+            - ./pg_data:/var/lib/postgresql/data
+        restart: always
+
+    rabbitmq:
+        hostname: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+            - 5672:5672
+            - 15672:15672
+        restart: always
+
+    app:
+        build: .
+        tty: true
+        command: python manage.py runserver 0.0.0.0:8000
+        environment:
+            DJANGO_SETTINGS_MODULE: "${DJANGO_SETTINGS_MODULE}"
+            SECRET_KEY: "${SECRET_KEY}"
+        depends_on:
+            - rabbitmq
+        ports:
+            - 8000:8000
+        volumes:
+            - ./:/webstore
+        restart: always
+
+    celery:
+        build: .
+        command: celery -A config worker -l INFO
+        environment:
+            DJANGO_SETTINGS_MODULE: "${DJANGO_SETTINGS_MODULE}"
+            SECRET_KEY: "${SECRET_KEY}"
+        depends_on:
+            - app
+            - rabbitmq
+        restart: always

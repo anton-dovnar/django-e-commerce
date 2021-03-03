@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.str('DATABASE_NAME', 'webstore'),
+        'USER': env.str('DATABASE_USER', 'webstore'),
+        'PASSWORD': env.str('DATABASE_PASSWORD', '123'),
+        'HOST': env.str('DATABASE_HOST', '127.0.0.1'),
+        'PORT': env.str('DATABASE_PORT', '5432')
     }
 }
 
@@ -153,3 +157,5 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+
+CELERY_BROKER_URL= 'amqp://rabbitmq:5672'
