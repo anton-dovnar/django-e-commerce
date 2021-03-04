@@ -1,32 +1,19 @@
 from django.test import TestCase, tag
-from django.utils.text import slugify
 
-from shop.models import Category, Product
+from shop.models import Category, Product, Size
+from shop.tests.mixins import SetUpMixin
 
 
 @tag('shop-models')
-class ModelsTest(TestCase):
+class ModelsTest(SetUpMixin, TestCase):
     def test_category_creation(self):
-        category = Category(name='Shoes', slug='shoes')
-
-        self.assertIsInstance(category, Category)
-        self.assertEqual(category.slug, slugify(category.name))
-        self.assertEqual(category.__str__(), category.name)
+        self.assertIsInstance(self.category, Category)
+        self.assertEqual(self.category.__str__(), self.category.name)
 
     def test_product_creation(self):
-        category = Category(name='Shoes', slug='shoes')
-        product = Product(
-            category=category, name='Nike SB Zoom Blazer Mid Edge',
-            slug='nike-sb-zoom-blazer-mid-edge',
-            description="""Want a custom look without the elbow grease?
-            The Nike SB Zoom Blazer Mid Edge adds that something extra
-            to your kicks with DIY details like frayed stitching, cut-out
-            eyestays and patches of extra material in high-wear areas.""",
-            price=89.95, available=True
-        )
+        self.assertIsInstance(self.product, Product)
+        self.assertEqual(self.product.__str__(), self.product.name)
 
-        self.assertIsInstance(product, Product)
-        self.assertIsInstance(product.category, Category)
-        self.assertEqual(product.category.name, category.name)
-        self.assertEqual(product.slug, slugify(product.name))
-        self.assertEqual(product.__str__(), product.name)
+    def test_size_creation(self):
+        self.assertIsInstance(self.shoe_size, Size)
+        self.assertEqual(self.shoe_size.__str__(), f'{self.shoe_size.product.name} - {self.shoe_size.size}')

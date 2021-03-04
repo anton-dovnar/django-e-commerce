@@ -18,7 +18,6 @@ def upload_to(instance, filename, img):
     file_path = settings.BASE_DIR.joinpath('media', f'{instance.product.category.name}')
     file_path.mkdir(parents=True, exist_ok=True)
     file_name = PurePath(f'{instance.product.name}').with_suffix(suffix)
-
     return PurePath(f'{instance.product.category.name}').joinpath(file_name).as_posix()
 
 
@@ -35,7 +34,7 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('shop:product-list-by-category', args=[self.slug])
@@ -64,7 +63,7 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('shop:product-detail', args=[self.id, self.slug])
@@ -108,9 +107,11 @@ class Photo(models.Model):
 
                 self.image = PurePath(f'{category_name}').joinpath(f'{stem}.webp').as_posix()
 
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
+        """ Delete local files """
+
         from django.core.files.storage import default_storage
 
         if self.image:
@@ -119,7 +120,7 @@ class Photo(models.Model):
                 default_storage.delete(self.image_mobile.path)
                 default_storage.delete(self.image.path)
 
-        return super().delete(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
 
 class Size(models.Model):
