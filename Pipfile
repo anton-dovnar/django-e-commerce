@@ -13,6 +13,7 @@ weasyprint = "*"
 braintree = "*"
 celery = "*"
 psycopg2 = "*"
+model-mommy = "*"
 
 [dev-packages]
 django-extensions = "*"
