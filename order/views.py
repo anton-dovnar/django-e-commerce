@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 
+from cart.cart import Cart
 from order.forms import OrderForm
 from order.models import Order
 
@@ -18,11 +19,12 @@ class OrderFormView(FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['request'] = self.request
+        kwargs['cart'] = Cart(self.request)
         return kwargs
 
     def form_valid(self, form):
-        form.save()
+        order_id = form.save()
+        self.request.session['order_id'] = order_id
         return super().form_valid(form)
 
 

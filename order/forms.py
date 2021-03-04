@@ -1,6 +1,6 @@
 from django import forms
+from django.db import transaction
 
-from cart.cart import Cart
 from order.models import Order, OrderItem
 
 
@@ -11,23 +11,23 @@ class OrderForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email', 'address', 'postal_code', 'city']
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
+        self.cart = kwargs.pop('cart', None)
         super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        cart = Cart(self.request)
 
-        if cart.coupon:
-            instance.coupon = cart.coupon
-            instance.discount = cart.coupon.discount
+        if self.cart.coupon:
+            instance.coupon = self.cart.coupon
+            instance.discount = self.cart.coupon.discount
 
         if commit:
-            instance.save()
+            with transaction.atomic():
+                instance.save()
 
-        for item in cart:
-            OrderItem.objects.create(
-                order=instance, product=item['product'], price=item['price'], quantity=item['quantity'])
+                for item in self.cart:
+                    OrderItem.objects.create(
+                        order=instance, product=item['product'], price=item['price'], quantity=item['quantity'])
 
-        cart.clear()
-        self.request.session['order_id'] = instance.id
+        self.cart.clear()
+        return instance.id
