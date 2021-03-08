@@ -1,7 +1,7 @@
-from django.test import TestCase, tag
 from django.core.exceptions import ValidationError
+from django.test import TestCase, tag
 
-from shop.models import Category, Product, Size, Photo
+from shop.models import Category, Photo, Product, Size
 from shop.tests.mixins import SetUpMixin
 
 

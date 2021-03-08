@@ -1,8 +1,8 @@
-from django.test import override_settings
 from django.conf import settings
+from django.test import override_settings
 from model_mommy import mommy
 
-from shop.models import Category, Product, Size, Photo
+from shop.models import Category, Photo, Product, Size
 
 
 class SetUpMixin:
