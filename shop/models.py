@@ -22,7 +22,7 @@ def upload_to(instance, filename, img):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, db_index=True, unique=True)
+    name = models.CharField(max_length=50, db_index=True, unique=True)
     slug = models.SlugField(max_length=200, db_index=True, allow_unicode=True, unique=True)
 
     class Meta:
@@ -85,7 +85,7 @@ class Photo(models.Model):
 
     def clean(self):
         super().clean()
-        if self.image is None and self.url is None:
+        if not self.image and self.url is None:
             raise ValidationError('Image and Url cannot be both null.')
 
     def save(self, *args, **kwargs):
