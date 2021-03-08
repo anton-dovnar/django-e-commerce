@@ -25,6 +25,10 @@ def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
+
+    if not cart.cart:
+        cart.clear()
+
     return redirect('cart:cart-detail')
 
 
@@ -32,12 +36,10 @@ def cart_detail(request):
     cart = Cart(request)
 
     if cart.cart:
-
         for item in cart:
             item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'override': True})
 
         coupon_form = CouponApplyForm()
-
         return render(request, 'cart/cart_detail.html', {'cart': cart, 'coupon_form': coupon_form})
 
     return redirect('shop:product-list')
