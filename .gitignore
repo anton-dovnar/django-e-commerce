@@ -53,6 +53,7 @@ Thumbs.db
 *.mov
 *.wmv
 *.vim
+test_media
 
 # fode4cun cfg files
 pyrightconfig.json
