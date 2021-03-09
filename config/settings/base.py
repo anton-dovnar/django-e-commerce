@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env.str('DATABASE_NAME', 'webstore'),
-        'USER': env.str('DATABASE_USER', 'webstore'),
-        'PASSWORD': env.str('DATABASE_PASSWORD', '123'),
-        'HOST': env.str('DATABASE_HOST', '127.0.0.1'),
-        'PORT': env.str('DATABASE_PORT', '5432')
+        'NAME': env.str('DATABASE_NAME'),
+        'USER': env.str('DATABASE_USER'),
+        'PASSWORD': env.str('DATABASE_PASSWORD'),
+        'HOST': env.str('DATABASE_HOST'),
+        'PORT': env.str('DATABASE_PORT')
     }
 }
 
@@ -162,4 +162,4 @@ CELERY_BROKER_URL= 'amqp://rabbitmq:5672'
 
 REDIS_HOST = env.str('REDIS_HOST')
 REDIS_PORT = 6379
-REDIS_DB = 0
+REDIS_DB = 1

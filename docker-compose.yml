@@ -38,6 +38,7 @@ services:
             DJANGO_SETTINGS_MODULE: "${DJANGO_SETTINGS_MODULE}"
             SECRET_KEY: "${SECRET_KEY}"
             DATABASE_HOST: "${DATABASE_HOST}"
+            REDIS_HOST: "${REDIS_HOST}"
         depends_on:
             - postgres
             - rabbitmq
@@ -54,6 +55,7 @@ services:
         environment:
             DJANGO_SETTINGS_MODULE: "${DJANGO_SETTINGS_MODULE}"
             SECRET_KEY: "${SECRET_KEY}"
+            DATABASE_HOST: "${DATABASE_HOST}"
         depends_on:
             - app
             - rabbitmq
