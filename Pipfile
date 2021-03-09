@@ -14,6 +14,7 @@ braintree = "*"
 celery = "*"
 psycopg2 = "*"
 model-mommy = "*"
+redis = "*"
 
 [dev-packages]
 django-extensions = "*"
