@@ -1,11 +1,10 @@
-from django.core.paginator import EmptyPage, PageNotAnInteger
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 
 from cart.forms import CartAddProductForm
 from shop.models import Category, Product
+from shop.recommender import Recommender
 
 
 class ProductListView(ListView):
@@ -40,5 +39,8 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        product = super().get_object()
+        r = Recommender()
         context['cart_product_form'] = CartAddProductForm()
+        context['recommended_products'] = r.suggest_products_for([product], 4)
         return context

@@ -52,7 +52,20 @@
                 <p style="word-spacing:5px;">{{ product.description }}</p>
             </div>
 
-
+            {% if recommended_products %}
+            <h3 class="mb-2">People who bought this also bought</h3>
+            <div class="d-flex flex-wrap">
+                {% for p in recommended_products %}
+                <div class="item mx-1 my-3">
+                    {% with  p.first_photo as first_photo %}
+                    <a href="{{ p.get_absolute_url }}">
+                        <img src="{% if first_photo %}{{ first_photo.0.image_mobile.url }}{% else %}{% static 'shop/img/no_image.png' %}{% endif %}" width="132" height="165" alt="{{ p.name }}">
+                    </a>
+                    {% endwith %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
