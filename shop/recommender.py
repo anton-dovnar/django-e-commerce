@@ -10,8 +10,8 @@ class Recommender:
     def get_product_key(self, pk):
         return f'product:{pk}:purchased_with'
 
-    def products_bought(self, products):
-        product_pks = [p.pk for p in products]
+    def products_bought(self, order):
+        product_pks = [item.product.pk for item in order]
         for product_pk in product_pks:
             for with_pk in product_pks:
                 # Get the other products bought with each product
@@ -40,7 +40,7 @@ class Recommender:
 
         suggested_products_pks = [int(pk) for pk in suggestions]
         # Get suggested products and sort by order of appearance
-        suggested_products = list(Product.objects.filter(pk__in=suggested_products_pks))
+        suggested_products = list(Product.objects.list().filter(pk__in=suggested_products_pks))
         suggested_products.sort(key=lambda x: suggested_products_pks.index(x.pk))
         return suggested_products
 

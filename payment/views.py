@@ -7,6 +7,7 @@ from django.views.generic.detail import SingleObjectMixin
 
 from order.models import Order
 from payment.tasks import payment_completed
+from shop.recommender import Recommender
 
 gateway = braintree.BraintreeGateway(settings.BRAINTREE_CONF)
 
@@ -31,6 +32,7 @@ class ProcessView(SingleObjectMixin, TemplateView):
     def post(self, *args, **kwargs):
         order = self.get_object()
         total_cost = order.get_total_cost()
+        r = Recommender()
         nonce = self.request.POST.get('payment_method_nonce', None)
         result = gateway.transaction.sale({
             'amount': f'{total_cost:.2f}',
@@ -44,6 +46,7 @@ class ProcessView(SingleObjectMixin, TemplateView):
             order.paid = True
             order.braintree_id = result.transaction.id
             order.save()
+            r.products_bought(order.items.all())
             payment_completed.apply_async([order.pk])
             return redirect('payment:done')
 
