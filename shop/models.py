@@ -57,6 +57,7 @@ class Product(models.Model):
         verbose_name_plural = 'Products'
         index_together = (('id', 'slug'),)
         unique_together = ['category', 'name']
+        ordering = ['-created']
 
     def __str__(self):
         return self.name
