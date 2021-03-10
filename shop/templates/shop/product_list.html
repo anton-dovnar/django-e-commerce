@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 
-{% load static %}
+{% load static cache %}
 
 {% block title %} Shoe Shop - {% if category %}{{ category.name }}{% else %}Products{% endif %} {% endblock title %}
 
@@ -11,9 +11,11 @@
 {% block content %}
 <div id="main" class="product-list">
     <h1 class="font-weight-normal text-center">{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+    {% cache 600 product_list_content product_list %}
     <div id="product-list" class="d-flex justify-content-center flex-wrap">
         {% include 'shop/product_list_ajax.html' %}
     </div>
+    {% endcache %}
 </div>
 {% endblock content %}
 

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
 
     # External
     'crispy_forms',
+    'memcache_status',
 
     # Internal
     'layout.apps.LayoutConfig',
@@ -163,3 +164,10 @@ CELERY_BROKER_URL= 'amqp://rabbitmq:5672'
 REDIS_HOST = env.str('REDIS_HOST')
 REDIS_PORT = 6379
 REDIS_DB = 1
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': env.str('CACHE_HOST') + ':11211',
+    }
+}

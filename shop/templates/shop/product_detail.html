@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 
-{% load static crispy_forms_field %}
+{% load static crispy_forms_field cache %}
 
 {% block title %} {{ product.category }} - {{ product.name }} {% endblock title %}
 
@@ -9,6 +9,7 @@
 {% endblock stylesheets %}
 
 {% block content %}
+{% cache 600 product_detail_content product %}
 <div id="main" class="my-5">
     <div id="product-detail" class="d-flex flex-wrap justify-content-center">
         <div class="photos col-lg-5 text-center mb-5">
@@ -69,4 +70,5 @@
         </div>
     </div>
 </div>
+{% endcache %}
 {% endblock content %}
