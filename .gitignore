@@ -15,6 +15,7 @@ dist/
 
 # Databse
 db.sqlite3
+redis_data/*
 
 # Log files
 *.log
