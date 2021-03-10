@@ -33,6 +33,12 @@ services:
             - ./redis_data:/data
         restart: always
 
+    cache:
+        image: memcached:latest
+        container_name: cache
+        ports:
+            - 11211:11211
+
     app:
         container_name: webstore
         build: .
@@ -43,10 +49,12 @@ services:
             SECRET_KEY: "${SECRET_KEY}"
             DATABASE_HOST: "${DATABASE_HOST}"
             REDIS_HOST: "${REDIS_HOST}"
+            CACHE_HOST: "${CACHE_HOST}"
         depends_on:
             - postgres
             - rabbitmq
             - redis
+            - cache
         ports:
             - 8000:8000
         volumes:
