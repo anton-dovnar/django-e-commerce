@@ -1,0 +1,31 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+environs = "*"
+pillow = "*"
+scrapy = "*"
+django-crispy-forms = "*"
+weasyprint = "*"
+braintree = "*"
+celery = "*"
+psycopg2 = "*"
+model-mommy = "*"
+redis = "*"
+python-memcached = "*"
+django-memcache-status = "*"
+gunicorn = "*"
+
+[dev-packages]
+django-extensions = "*"
+django-debug-toolbar = "*"
+rich = "*"
+coverage = "*"
+flake8 = "*"
+isort = "*"
+
+[requires]
+python_version = "3.8"
