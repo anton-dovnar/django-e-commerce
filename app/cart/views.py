@@ -9,6 +9,10 @@ from shop.models import Product
 
 @require_POST
 def cart_add(request, product_id):
+    """
+    Add product or update quantity in cart [[cart.py]].
+    """
+
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     form = CartAddProductForm(request.POST)
@@ -22,6 +26,10 @@ def cart_add(request, product_id):
 
 @require_POST
 def cart_remove(request, product_id):
+    """
+    Remove product form cart [[cart.py]].
+    """
+
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
@@ -33,6 +41,11 @@ def cart_remove(request, product_id):
 
 
 def cart_detail(request):
+    """
+    List cart items.
+    Accept coupon for discount.
+    """
+
     cart = Cart(request)
 
     if cart.cart:

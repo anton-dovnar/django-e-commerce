@@ -35,12 +35,23 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      
+      <p>Add product or update quantity in cart  <a href="cart.html">cart.py</a>.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="nd">@require_POST</span>
-<span class="k">def</span> <span class="nf">cart_add</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
-    <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cart_add</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">product</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Product</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">product_id</span><span class="p">)</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">CartAddProductForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
 
@@ -48,23 +59,64 @@
         <span class="n">cd</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span>
         <span class="n">cart</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="n">cd</span><span class="p">[</span><span class="s1">&#39;quantity&#39;</span><span class="p">],</span> <span class="n">override_quantity</span><span class="o">=</span><span class="n">cd</span><span class="p">[</span><span class="s1">&#39;override&#39;</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;cart:cart-detail&#39;</span><span class="p">)</span>
-
-
-<span class="nd">@require_POST</span>
-<span class="k">def</span> <span class="nf">cart_remove</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
-    <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;cart:cart-detail&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Remove product form cart  <a href="cart.html">cart.py</a>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@require_POST</span>
+<span class="k">def</span> <span class="nf">cart_remove</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">product</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Product</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">product_id</span><span class="p">)</span>
     <span class="n">cart</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cart</span><span class="o">.</span><span class="n">cart</span><span class="p">:</span>
         <span class="n">cart</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;cart:cart-detail&#39;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">cart_detail</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;cart:cart-detail&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>List cart items.
+Accept coupon for discount.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">cart_detail</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">cart</span><span class="o">.</span><span class="n">cart</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cart</span><span class="p">:</span>
