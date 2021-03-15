@@ -17,7 +17,9 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      
+      <p>Create backend aggregation recommender for purchases.
+This aggregation depends on successful purchases, which items people often buy together.
+Collect purchase data with Redis.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">redis</span>
@@ -34,7 +36,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      
+      <h3><span id="recommender" href="recommender"> Recommender </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">class</span> <span class="nc">Recommender</span><span class="p">:</span></pre></div>
@@ -46,11 +48,16 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      
+      <p>Recommender contains four main methods:</p>
+<ul>
+<li><strong>get_product_key</strong> product key for access data through Redis.</li>
+<li><strong>products_bought</strong> collect bought products.</li>
+<li><strong>suggest_products_for</strong> forming recommendations for a particular product  <a href="views.html">views.py</a>.</li>
+<li><strong>clear_purchases</strong> clear collected data.</li>
+</ul>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get_product_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;product:</span><span class="si">{</span><span class="n">pk</span><span class="si">}</span><span class="s1">:purchased_with&#39;</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -62,10 +69,8 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">products_bought</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
-        <span class="n">product_pks</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">product_pk</span> <span class="ow">in</span> <span class="n">product_pks</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">with_pk</span> <span class="ow">in</span> <span class="n">product_pks</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get_product_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;product:</span><span class="si">{</span><span class="n">pk</span><span class="si">}</span><span class="s1">:purchased_with&#39;</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -74,10 +79,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <p>Get the other products bought with each product</p>
+      <h4><span id="products_bought" href="products_bought"> products_bought </span></h4>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>                <span class="k">if</span> <span class="n">product_pk</span> <span class="o">!=</span> <span class="n">with_pk</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">products_bought</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -86,10 +91,17 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      <p>Increment score for product purchased together</p>
+      <ul>
+<li>Get the other products bought with each product.</li>
+<li>Increment score for product purchased together.</li>
+</ul>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>                    <span class="n">r</span><span class="o">.</span><span class="n">zincrby</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_key</span><span class="p">(</span><span class="n">product_pk</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">with_pk</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>        <span class="n">product_pks</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">product_pk</span> <span class="ow">in</span> <span class="n">product_pks</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">with_pk</span> <span class="ow">in</span> <span class="n">product_pks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">product_pk</span> <span class="o">!=</span> <span class="n">with_pk</span><span class="p">:</span>
+                    <span class="n">r</span><span class="o">.</span><span class="n">zincrby</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_key</span><span class="p">(</span><span class="n">product_pk</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">with_pk</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -98,14 +110,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
-      
+      <h4><span id="suggest_products_for" href="suggest_products_for"> suggest_products_for </span></h4>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">suggest_products_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">products</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
-        <span class="n">product_pks</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">products</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">suggestions</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">zrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_key</span><span class="p">(</span><span class="n">product_pks</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="n">max_results</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">suggest_products_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">products</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -113,6 +121,21 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Get suggested products and sort by order of appearance.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">product_pks</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">products</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">suggestions</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">zrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_key</span><span class="p">(</span><span class="n">product_pks</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="n">max_results</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <p>Generate a temporary key</p>
     </div>
@@ -122,10 +145,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-9'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
       <p>Multiple products, combine scores of all products
 Store the resulting sorted set in a temporary key</p>
@@ -136,10 +159,10 @@ Store the resulting sorted set in a temporary key</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-9'>
+  <div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <p>Remove ids for the products the recommendation is for</p>
     </div>
@@ -148,10 +171,10 @@ Store the resulting sorted set in a temporary key</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-10'>
+  <div class='section' id='section-11'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-10'>#</a>
+        <a class='octothorpe' href='#section-11'>#</a>
       </div>
       <p>Get the product pks by their score, descendant sort</p>
     </div>
@@ -160,29 +183,18 @@ Store the resulting sorted set in a temporary key</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-11'>
+  <div class='section' id='section-12'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-11'>#</a>
+        <a class='octothorpe' href='#section-12'>#</a>
       </div>
       <p>Remove the temporary key</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>            <span class="n">r</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">tmp_key</span><span class="p">)</span>
 
-        <span class="n">suggested_products_pks</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span> <span class="k">for</span> <span class="n">pk</span> <span class="ow">in</span> <span class="n">suggestions</span><span class="p">]</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-12'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-12'>#</a>
-      </div>
-      <p>Get suggested products and sort by order of appearance</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>        <span class="n">suggested_products</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk__in</span><span class="o">=</span><span class="n">suggested_products_pks</span><span class="p">))</span>
+        <span class="n">suggested_products_pks</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span> <span class="k">for</span> <span class="n">pk</span> <span class="ow">in</span> <span class="n">suggestions</span><span class="p">]</span>
+        <span class="n">suggested_products</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk__in</span><span class="o">=</span><span class="n">suggested_products_pks</span><span class="p">))</span>
         <span class="n">suggested_products</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">suggested_products_pks</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">pk</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">suggested_products</span></pre></div>
     </div>
@@ -193,11 +205,22 @@ Store the resulting sorted set in a temporary key</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-13'>#</a>
       </div>
-      
+      <h4><span id="clear_purchases" href="clear_purchases"> clear_purchases </span></h4>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">clear_purchases</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">pk</span> <span class="ow">in</span> <span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">clear_purchases</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Clear recommendations.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">for</span> <span class="n">pk</span> <span class="ow">in</span> <span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="n">r</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_key</span><span class="p">(</span><span class="n">pk</span><span class="p">))</span>
 
 </pre></div>
