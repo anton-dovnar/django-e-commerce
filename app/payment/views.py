@@ -17,6 +17,10 @@ class ProcessView(SingleObjectMixin, TemplateView):
     template_name = 'payment/process.html'
 
     def get_object(self):
+        """
+        Getting order by order id from the session variable.
+        """
+
         order_id = self.request.session.get('order_id')
         return get_object_or_404(self.model, id=order_id)
 
@@ -30,6 +34,11 @@ class ProcessView(SingleObjectMixin, TemplateView):
         return super().get(request, *args, **kwargs)
 
     def post(self, *args, **kwargs):
+        """
+        If the payment process successful, we create an index for products with Redis.
+        Add celery task, which sends email invoice with order information [[tasks.py]].
+        """
+
         order = self.get_object()
         total_cost = order.get_total_cost()
         r = Recommender()
@@ -54,6 +63,9 @@ class ProcessView(SingleObjectMixin, TemplateView):
 
 
 class ProcessMixin:
+    """
+    Display process status.
+    """
 
     def get(self, request, *args, **kwargs):
         order_id = request.session.get('order_id', None)
