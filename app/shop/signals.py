@@ -10,10 +10,10 @@ from shop.models import Photo
 @receiver(post_save, sender=Photo)
 def convert_image(sender, instance, **kwargs):
     """
-    Trigger on djagno admin upload image.
-    Resize image for multiple devices.
-    Convert image to WEBP.
-    Improving load page performance.
+    - Trigger on Django admin upload image.
+    - Resize an image for multiple devices.
+    - Convert image to WEBP.
+    - Improve load page performance.
     """
 
     if not instance.image_tablet:
