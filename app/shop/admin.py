@@ -1,4 +1,8 @@
-# -*- coding: utf-8 -*-
+"""
+Register models to the admin.
+Track memcache status.
+"""
+
 from django.contrib import admin
 
 from shop.models import Category, Photo, Product, Size
