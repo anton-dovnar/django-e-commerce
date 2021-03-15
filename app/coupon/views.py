@@ -8,6 +8,11 @@ from coupon.models import Coupon
 
 @require_POST
 def coupon_apply(request):
+    """
+    Check coupon for availability.
+    If available, add coupon id into user session.
+    """
+
     now = timezone.now()
     form = CouponApplyForm(request.POST)
 

@@ -34,12 +34,24 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      
+      <p>Check coupon for availability.
+If available, add coupon id into user session.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="nd">@require_POST</span>
-<span class="k">def</span> <span class="nf">coupon_apply</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">now</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">coupon_apply</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">now</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">CouponApplyForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
