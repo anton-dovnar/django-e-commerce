@@ -6,6 +6,7 @@ Shop constructed from 4 main objects:
 3. **Photo** - product photo ([[models.py#photo]])
 4. **Size** - product size ([[models.py#size]])
 """
+
 import contextlib
 from io import BytesIO
 from pathlib import PurePath
@@ -26,6 +27,7 @@ def upload_to(instance, filename, img):
     Defines path how we serve media files locally. (Images)
     It will look like / media / category name / file name
     """
+
     suffix = PurePath(filename).suffix
     file_path = settings.BASE_DIR.joinpath('media', f'{instance.product.category.name}')
     file_path.mkdir(parents=True, exist_ok=True)
@@ -41,6 +43,7 @@ class Category(models.Model):
     - **name** particular object name.
     - **slug** represented name for URL resolver.
     """
+
     name = models.CharField(max_length=50, db_index=True, unique=True)
     slug = models.SlugField(max_length=50, db_index=True, allow_unicode=True, unique=True)
 
@@ -73,6 +76,7 @@ class Product(models.Model):
     - **created** / ::updated:: represent date and time of editing object.
     - **objects** predefined custom model manager, which helps us optimize database query access ([[managers.py]])
     """
+
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, db_index=True)
@@ -119,6 +123,7 @@ class Photo(models.Model):
     2. **save** [[models.py#save]]
     3. **delete** [[models.py#delete]]
     """
+
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to=upload_to, null=True, blank=True)
     image_tablet = models.ImageField(upload_to=upload_to, null=True, blank=True)
@@ -138,6 +143,7 @@ class Photo(models.Model):
         Validate image uploading.
         Image and URL fields cannot be both empty.
         """
+
         super().clean()
         if not self.image and self.url is None:
             raise ValidationError('Image and Url cannot be both null.')
@@ -169,6 +175,7 @@ class Photo(models.Model):
         """
         When a product is deleting from the database, we also remove images from local storage.
         """
+
         from django.core.files.storage import default_storage
 
         if self.image:
@@ -188,6 +195,7 @@ class Size(models.Model):
     - **product** ManyToOne relationship to Product ([[models.py#product]]).
     - **size** particular product size.
     """
+
     product = models.ForeignKey(Product, related_name='sizes', on_delete=models.CASCADE)
     size = models.CharField(max_length=100)
 
