@@ -5,6 +5,10 @@ from order.models import Order, OrderItem
 
 
 class OrderForm(forms.ModelForm):
+    """
+    Order model form.
+    Redefined save method.
+    """
 
     class Meta:
         model = Order
@@ -15,6 +19,12 @@ class OrderForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
+        """
+        Get discount.
+        Create order items and set related to the current order.
+        At the end clear the cart.
+        """
+
         instance = super().save(commit=False)
 
         if self.cart.coupon:
