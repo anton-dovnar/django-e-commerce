@@ -15,6 +15,10 @@ class OrderItemInline(admin.TabularInline):
 
 
 def export_to_csv(modeladmin, request, queryset):
+    """
+    Export list of orders to a CSV file..
+    """
+
     opts = modeladmin.model._meta
     content_disposition = f'attachment; filename={opts.verbose_name}.csv'
     response = HttpResponse(content_type='text/csv')
@@ -40,11 +44,19 @@ export_to_csv.short_description = 'Export to CSV'
 
 
 def order_detail(obj):
+    """
+    Custom oder detail page [[views.py]].
+    """
+
     url = reverse('order:admin-order-detail', args=[obj.id])
     return mark_safe(f'<a href="{url}">View</a>')
 
 
 def order_pdf(obj):
+    """
+    Generate invoice pdf [[views.py]].
+    """
+
     url = reverse('order:admin-order-pdf', args=[obj.id])
     return mark_safe(f'<a href="{url}">PDF</a>')
 
