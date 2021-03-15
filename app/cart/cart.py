@@ -1,3 +1,7 @@
+"""
+Create a cart for each user and keep it in the user session [[context_processors.py]].
+"""
+
 from decimal import Decimal
 
 from django.conf import settings
@@ -7,6 +11,15 @@ from shop.models import Product
 
 
 class Cart:
+    """
+    Custom cart, which depends on user session.
+    A cart can perform the next operations:
+
+    1. **Add** - add product or update quantity.
+    2. **Delete** - delete product from cart.
+    3. **Accept Coupon** - get discount with coupon.
+    """
+
     def __init__(self, request):
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
@@ -19,8 +32,7 @@ class Cart:
 
     def __iter__(self):
         """
-        Iterate over the items in the cart and get the products
-        from the database.
+        Iterate over the items in the cart and get the products from the database.
         """
 
         product_ids = self.cart.keys()
@@ -71,10 +83,18 @@ class Cart:
         self.save()
 
     def get_total_price(self):
+        """
+        Calculate total price.
+        """
+
         return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 
     @property
     def coupon(self):
+        """
+        Get coupon if exists.
+        """
+
         if self.coupon_id:
             try:
                 return Coupon.objects.get(id=self.coupon_id)
@@ -84,10 +104,18 @@ class Cart:
         return None
 
     def get_discount(self):
+        """
+        Calculate discount.
+        """
+
         if self.coupon:
             return (self.coupon.discount / Decimal(100)) * self.get_total_price()
 
         return Decimal(0)
 
     def get_total_price_after_discount(self):
+        """
+        Calculate total price after discount.
+        """
+
         return self.get_total_price() - self.get_discount()
