@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>settings.py</title>
+  <link rel="stylesheet" href="../../pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>settings.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Scrapy settings for scrapy_app project</p>
+<p>For simplicity, this file contains only settings considered important or
+commonly used. You can find more settings consulting the documentation:</p>
+<pre><code>https://docs.scrapy.org/en/latest/topics/settings.html
+https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
+https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="n">BOT_NAME</span> <span class="o">=</span> <span class="s1">&#39;scrapy_app&#39;</span>
+
+<span class="n">SPIDER_MODULES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;scrapy_app.spiders&#39;</span><span class="p">]</span>
+<span class="n">NEWSPIDER_MODULE</span> <span class="o">=</span> <span class="s1">&#39;scrapy_app.spiders&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Crawl responsibly by identifying yourself (and your website) on the user-agent
+USER_AGENT = &lsquo;scrapy_app (+http://www.yourdomain.com)&rsquo;</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Obey robots.txt rules</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">ROBOTSTXT_OBEY</span> <span class="o">=</span> <span class="kc">True</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Configure maximum concurrent requests performed by Scrapy (default: 16)
+CONCURRENT_REQUESTS = 32</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Configure a delay for requests for the same website (default: 0)
+See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
+See also autothrottle settings and docs</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">DOWNLOAD_DELAY</span> <span class="o">=</span> <span class="mi">5</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>The download delay setting will honor only one of:
+CONCURRENT_REQUESTS_PER_DOMAIN = 16
+CONCURRENT_REQUESTS_PER_IP = 16</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Disable cookies (enabled by default)
+COOKIES_ENABLED = False</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Disable Telnet Console (enabled by default)
+TELNETCONSOLE_ENABLED = False</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Override the default request headers:
+DEFAULT_REQUEST_HEADERS = {
+  &lsquo;Accept&rsquo;: &lsquo;text/html,application/xhtml+xml,application/xml;q=0.9,<em>/</em>;q=0.8&rsquo;,
+  &lsquo;Accept-Language&rsquo;: &lsquo;en&rsquo;,
+}</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Enable or disable spider middlewares
+See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+SPIDER_MIDDLEWARES = {
+   &lsquo;scrapy_app.middlewares.ScrapyAppSpiderMiddleware&rsquo;: 543,
+}</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Enable or disable downloader middlewares
+See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
+DOWNLOADER_MIDDLEWARES = {
+   &lsquo;scrapy_app.middlewares.ScrapyAppDownloaderMiddleware&rsquo;: 543,
+}</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Enable or disable extensions
+See https://docs.scrapy.org/en/latest/topics/extensions.html
+EXTENSIONS = {
+   &lsquo;scrapy.extensions.telnet.TelnetConsole&rsquo;: None,
+}</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Configure item pipelines
+See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+ITEM_PIPELINES = {
+   &lsquo;scrapy_app.pipelines.ScrapyAppPipeline&rsquo;: 300,
+}</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Enable and configure the AutoThrottle extension (disabled by default)
+See https://docs.scrapy.org/en/latest/topics/autothrottle.html
+AUTOTHROTTLE_ENABLED = True
+The initial download delay
+AUTOTHROTTLE_START_DELAY = 5
+The maximum download delay to be set in case of high latencies
+AUTOTHROTTLE_MAX_DELAY = 60
+The average number of requests Scrapy should be sending in parallel to
+each remote server
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+Enable showing throttling stats for every response received:
+AUTOTHROTTLE_DEBUG = False</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Enable and configure HTTP caching (disabled by default)
+See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
+HTTPCACHE_ENABLED = True
+HTTPCACHE_EXPIRATION_SECS = 0
+HTTPCACHE_DIR = &lsquo;httpcache&rsquo;
+HTTPCACHE_IGNORE_HTTP_CODES = []
+HTTPCACHE_STORAGE = &lsquo;scrapy.extensions.httpcache.FilesystemCacheStorage&rsquo;</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

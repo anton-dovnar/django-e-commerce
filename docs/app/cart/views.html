@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>views.py</title>
+  <link rel="stylesheet" href="../../pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>views.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">django.views.decorators.http</span> <span class="kn">import</span> <span class="n">require_POST</span>
+
+<span class="kn">from</span> <span class="nn">cart.cart</span> <span class="kn">import</span> <span class="n">Cart</span>
+<span class="kn">from</span> <span class="nn">cart.forms</span> <span class="kn">import</span> <span class="n">CartAddProductForm</span>
+<span class="kn">from</span> <span class="nn">coupon.forms</span> <span class="kn">import</span> <span class="n">CouponApplyForm</span>
+<span class="kn">from</span> <span class="nn">shop.models</span> <span class="kn">import</span> <span class="n">Product</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@require_POST</span>
+<span class="k">def</span> <span class="nf">cart_add</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">product</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Product</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">product_id</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">CartAddProductForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">cd</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span>
+        <span class="n">cart</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="n">cd</span><span class="p">[</span><span class="s1">&#39;quantity&#39;</span><span class="p">],</span> <span class="n">override_quantity</span><span class="o">=</span><span class="n">cd</span><span class="p">[</span><span class="s1">&#39;override&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;cart:cart-detail&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@require_POST</span>
+<span class="k">def</span> <span class="nf">cart_remove</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">product</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Product</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">product_id</span><span class="p">)</span>
+    <span class="n">cart</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cart</span><span class="o">.</span><span class="n">cart</span><span class="p">:</span>
+        <span class="n">cart</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;cart:cart-detail&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">cart_detail</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cart</span><span class="o">.</span><span class="n">cart</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cart</span><span class="p">:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;update_quantity_form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CartAddProductForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;quantity&#39;</span><span class="p">],</span> <span class="s1">&#39;override&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+
+        <span class="n">coupon_form</span> <span class="o">=</span> <span class="n">CouponApplyForm</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;cart/cart_detail.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;cart&#39;</span><span class="p">:</span> <span class="n">cart</span><span class="p">,</span> <span class="s1">&#39;coupon_form&#39;</span><span class="p">:</span> <span class="n">coupon_form</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;shop:product-list&#39;</span><span class="p">)</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

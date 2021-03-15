@@ -1,3 +1,11 @@
+"""
+Shop constructed from 4 main objects:
+
+1. **Category** - define a category for products ([[models.py#category]])
+2. **Product** - contains all necessary information about the product ([[models.py#product]])
+3. **Photo** - product photo ([[models.py#photo]])
+4. **Size** - product size ([[models.py#size]])
+"""
 import contextlib
 from io import BytesIO
 from pathlib import PurePath
@@ -14,6 +22,10 @@ from shop.managers import ProductManager
 
 
 def upload_to(instance, filename, img):
+    """
+    Defines path how we serve media files locally. (Images)
+    It will look like / media / category name / file name
+    """
     suffix = PurePath(filename).suffix
     file_path = settings.BASE_DIR.joinpath('media', f'{instance.product.category.name}')
     file_path.mkdir(parents=True, exist_ok=True)
@@ -21,9 +33,16 @@ def upload_to(instance, filename, img):
     return PurePath(f'{instance.product.category.name}').joinpath(file_name).as_posix()
 
 
+# === Category ===
 class Category(models.Model):
+    """
+    Category contain two fileds:
+
+    - **name** particular object name.
+    - **slug** represented name for URL resolver.
+    """
     name = models.CharField(max_length=50, db_index=True, unique=True)
-    slug = models.SlugField(max_length=200, db_index=True, allow_unicode=True, unique=True)
+    slug = models.SlugField(max_length=50, db_index=True, allow_unicode=True, unique=True)
 
     class Meta:
         verbose_name = 'Category'
@@ -40,10 +59,23 @@ class Category(models.Model):
         return reverse('shop:product-list-by-category', args=[self.slug])
 
 
+# === Product ===
 class Product(models.Model):
+    """
+    The product contains eight fields and one custom model manager:
+
+    - **category** ManyToOne relationship to Category ([[models.py#category]])
+    - **name** particular object name.
+    - **slug** represented name for URL resolver.
+    - **description** particular object description.
+    - **price** decimal number with two places such as `100.55`.
+    - **available** boolean value for checking object is available for selling or not.
+    - **created** / ::updated:: represent date and time of editing object.
+    - **objects** predefined custom model manager, which helps us optimize database query access ([[managers.py]])
+    """
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=100, db_index=True)
-    slug = models.SlugField(max_length=200, db_index=True)
+    slug = models.SlugField(max_length=100, db_index=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
@@ -70,7 +102,23 @@ class Product(models.Model):
         return reverse('shop:product-detail', args=[self.id, self.slug])
 
 
+# === Photo ===
 class Photo(models.Model):
+    """
+    The photo contains five fields:
+
+    - **product** ManyToOne relationship to Product ([[models.py#product]]).
+    - **image** big resolution image for desktop users.
+    - **image_tablet** resize image to (768, 960) for best practice.
+    - **image_mobile** resize image to (540, 675) for bets mobile practice.
+    - **url** if we don't have an image locally we also can set an external URL for downloading the image.
+
+    Redefined methods:
+
+    1. **clean** [[models.py#clean]]
+    2. **save** [[models.py#save]]
+    3. **delete** [[models.py#delete]]
+    """
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to=upload_to, null=True, blank=True)
     image_tablet = models.ImageField(upload_to=upload_to, null=True, blank=True)
@@ -84,14 +132,20 @@ class Photo(models.Model):
     def __str__(self):
         return f'{self.product.name} - {self.image}'
 
+    # ==== clean ====
     def clean(self):
+        """
+        Validate image uploading.
+        Image and URL fields cannot be both empty.
+        """
         super().clean()
         if not self.image and self.url is None:
             raise ValidationError('Image and Url cannot be both null.')
 
+    # ==== save ====
     def save(self, *args, **kwargs):
         """
-        Downloading image from url.
+        Downloading images from external URLs and serve them locally.
         """
 
         if self.url and not self.image:
@@ -110,9 +164,11 @@ class Photo(models.Model):
 
         super().save(*args, **kwargs)
 
+    # ==== delete ====
     def delete(self, *args, **kwargs):
-        """ Delete local files """
-
+        """
+        When a product is deleting from the database, we also remove images from local storage.
+        """
         from django.core.files.storage import default_storage
 
         if self.image:
@@ -124,7 +180,14 @@ class Photo(models.Model):
         super().delete(*args, **kwargs)
 
 
+# === Size ===
 class Size(models.Model):
+    """
+    Model size contains two fields:
+
+    - **product** ManyToOne relationship to Product ([[models.py#product]]).
+    - **size** particular product size.
+    """
     product = models.ForeignKey(Product, related_name='sizes', on_delete=models.CASCADE)
     size = models.CharField(max_length=100)
 
