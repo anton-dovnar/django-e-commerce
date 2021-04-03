@@ -2,15 +2,15 @@
 
 This project was created for educational purposes.
 
-We enable clients to browse products, add them to the cart, apply discount codes,
+Enable clients to browse products, add them to the cart, apply discount codes,
 go through the checkout process, pay with a credit card, and obtain an invoice.
-Also, we implemented a recommendation engine to recommend products to customers.
+Also, implemented a recommendation engine to recommend products to customers.
 
 ## Preview
 
 ![webstore](./preview/preview.gif "Preview")
 
-## What did we do?
+## What I've done?
 
 * Python e-commerce platform based on Django framework.
 * Web Crawler with Scrapy framework.
