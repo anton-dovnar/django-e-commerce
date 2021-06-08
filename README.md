@@ -1,7 +1,5 @@
 # 💎 Django e-commerce platform 💎
 
-This project was created for educational purposes.
-
 Enable clients to browse products, add them to the cart, apply discount codes,
 go through the checkout process, pay with a credit card, and obtain an invoice.
 Also, implemented a recommendation engine to recommend products to customers.
